@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>LVLRY-BUYS</title>
+  <title>LVLRY-BUYS – Produktanzeige</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     * {
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: #000; /* Schwarzer Hintergrund */
+      background: #000;
       padding: 20px;
       display: flex;
       justify-content: center;
@@ -22,99 +22,143 @@
     .page {
       max-width: 900px;
       width: 100%;
+      animation: fadeInUp 0.7s ease-out both;
     }
 
-    /* ANZEIGEN-KARTE */
+    /* CARD */
     .ad-card {
-      background: #111; /* dunkelgrau/schwarz */
+      background: #0a0a0a;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(255,255,255,0.05);
-      padding: 16px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.05);
+      padding: 18px;
       display: grid;
       grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
-      gap: 20px;
-      border: 1px solid #222;
+      gap: 22px;
+      border: 1px solid #1a1a1a;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    @media (max-width: 720px) {
+    .ad-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(255,255,255,0.15);
+    }
+
+    @media(max-width: 720px) {
+      body {
+        padding: 10px;
+      }
       .ad-card {
         grid-template-columns: 1fr;
+        padding: 14px;
       }
     }
 
-    /* BILDER */
+    /* MAIN IMAGE */
     .gallery-main {
       overflow: hidden;
-      border-radius: 6px;
-      border: 2px solid #fff; /* weiße Umrandung */
+      border-radius: 8px;
+      border: 2px solid #fff;
+      background: #000;
     }
 
-    .gallery-main img {
+    #mainImage {
       width: 100%;
       display: block;
       object-fit: cover;
+      transition: opacity 0.2s ease;
     }
 
+    /* THUMBNAILS */
     .thumbs {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     .thumbs img {
-      width: 70px;
-      height: 70px;
+      width: 75px;
+      height: 75px;
       object-fit: cover;
       border-radius: 4px;
       border: 1px solid #fff;
       cursor: pointer;
-      transition: opacity 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
     .thumbs img:hover {
       opacity: 0.7;
+      transform: scale(1.07);
     }
 
-    /* TEXT */
+    .thumbs img.active-thumb {
+      box-shadow: 0 0 15px rgba(255,255,255,0.9);
+    }
+
+    /* TEXT SECTION */
     .ad-info h1 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
+      font-size: 2rem;
       font-weight: 900;
+      margin-bottom: 10px;
       color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.25);
+    }
+
+    .logo-badge {
+      display: inline-block;
+      font-size: 0.9rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 12px;
+      position: relative;
+      animation: logoPulse 1.8s infinite alternate;
+    }
+
+    .logo-badge::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.5);
+      opacity: 0.15;
+      pointer-events: none;
     }
 
     .price {
-      color: #fff;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255,255,255,0.45);
     }
 
     .meta {
       font-size: 0.85rem;
-      color: #bbb;
-      margin-bottom: 16px;
+      color: #aaa;
+      margin-bottom: 18px;
     }
 
     .description-title {
-      font-weight: 700;
-      margin-bottom: 4px;
       font-size: 1rem;
+      font-weight: 700;
       color: #fff;
+      margin-bottom: 6px;
     }
 
     .description {
       font-size: 0.95rem;
-      line-height: 1.5;
+      color: #ccc;
       margin-bottom: 20px;
-      color: #ddd;
+      line-height: 1.6;
     }
 
     .details-list {
       list-style: none;
-      font-size: 0.9rem;
       color: #ccc;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
+      font-size: 0.9rem;
     }
 
     .details-list li {
@@ -122,37 +166,66 @@
     }
 
     /* BUTTONS */
+    .btn-primary,
+    .btn-outline {
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 800;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
     .btn-primary {
       background: #fff;
       color: #000;
-      padding: 12px 20px;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      font-weight: 800;
-      width: 100%;
-      margin-bottom: 10px;
+      text-align: center;
+      display: block;
+      text-decoration: none;
+      box-shadow: 0 0 12px rgba(255,255,255,0.4);
     }
 
     .btn-primary:hover {
-      background: #ddd;
+      box-shadow: 0 0 22px rgba(255,255,255,0.9);
+      transform: scale(1.03);
     }
 
     .btn-outline {
       background: transparent;
       border: 2px solid #fff;
       color: #fff;
-      padding: 12px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 800;
-      width: 100%;
     }
 
     .btn-outline:hover {
       background: #fff;
       color: #000;
+      transform: scale(1.03);
+      box-shadow: 0 0 22px rgba(255,255,255,0.9);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes logoPulse {
+      from {
+        opacity: 0.7;
+        text-shadow: 0 0 6px rgba(255,255,255,0.6);
+      }
+      to {
+        opacity: 1;
+        text-shadow: 0 0 16px rgba(255,255,255,1);
+      }
     }
   </style>
 </head>
@@ -160,27 +233,27 @@
 
   <div class="page">
 
-    <!-- ANZEIGE -->
     <main class="ad-card">
 
-      <!-- BILDER -->
+      <!-- IMAGE SECTION -->
       <section>
         <div class="gallery-main">
-          <img src="IMG_4609.jpeg" alt="Produktbild 1">
+          <img id="mainImage" src="IMG_4609.jpeg" alt="Produktbild">
         </div>
 
         <div class="thumbs">
-          <img src="IMG_4609.jpeg" alt="Bild 1">
-          <img src="IMG_4610.jpeg" alt="Bild 2">
-          <img src="IMG_4611.jpeg" alt="Bild 3">
-          <img src="IMG_4612.jpeg" alt="Bild 4">
+          <img src="IMG_4609.jpeg" class="active-thumb">
+          <img src="IMG_4610.jpeg">
+          <img src="IMG_4611.jpeg">
+          <img src="IMG_4612.jpeg">
         </div>
       </section>
 
-      <!-- TEXT -->
+      <!-- TEXT SECTION -->
       <section class="ad-info">
-        <h1>LV SKATES</h1>
+        <div class="logo-badge">LVLRY-BUYS</div>
 
+        <h1>LV SKATES</h1>
         <div class="price">49,99 €</div>
 
         <div class="meta">Heute · Versand möglich</div>
@@ -188,7 +261,7 @@
         <div class="description-title">Beschreibung</div>
         <p class="description">
           Die besten Schuhe, für den besten Preis – verpass das nicht!  
-          Stylische LV Skates mit moderner Sohle und hochwertigem Look.
+          Stylische LV Skates mit moderner Sohle, starkem Look und Premium-Feeling.
         </p>
 
         <ul class="details-list">
@@ -197,13 +270,39 @@
           <li><strong>Zustand:</strong> Neu</li>
         </ul>
 
-        <button class="btn-primary">Nachricht senden</button>
+        <!-- INSTAGRAM BUTTON -->
+        <a class="btn-primary"
+           href="https://www.instagram.com/sellzlvlby"
+           target="_blank">
+           Kontakt über Instagram
+        </a>
+
         <button class="btn-outline">Merken</button>
       </section>
 
     </main>
 
   </div>
+
+  <script>
+    const mainImage = document.getElementById("mainImage");
+    const thumbs = document.querySelectorAll(".thumbs img");
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener("click", () => {
+        // Bildwechsel
+        mainImage.style.opacity = 0;
+        setTimeout(() => {
+          mainImage.src = thumb.src;
+          mainImage.style.opacity = 1;
+        }, 180);
+
+        // Active markieren
+        thumbs.forEach(t => t.classList.remove("active-thumb"));
+        thumb.classList.add("active-thumb");
+      });
+    });
+  </script>
 
 </body>
 </html>
