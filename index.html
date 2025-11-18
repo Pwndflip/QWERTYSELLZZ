@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>LV SKATES – Kleinanzeige</title>
+  <title>LVLRY-BUYS – Produktanzeige</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     * {
@@ -13,7 +13,7 @@
     }
 
     body {
-      background: #f3f3f3;
+      background: #f5f5f5;
       padding: 20px;
       display: flex;
       justify-content: center;
@@ -24,37 +24,43 @@
       width: 100%;
     }
 
+    /* HEADER */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #d40000;
     }
 
     .logo {
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #0f6f3d;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: #d40000;
+      letter-spacing: 1px;
     }
 
     .header-links a {
       margin-left: 15px;
       font-size: 0.9rem;
-      color: #555;
+      color: #000;
       text-decoration: none;
+      font-weight: 600;
     }
 
     .header-links a:hover {
       text-decoration: underline;
     }
 
+    /* ANZEIGEN-KARTE */
     .ad-card {
       background: #fff;
       border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       padding: 16px;
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+      grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
       gap: 16px;
     }
 
@@ -64,12 +70,11 @@
       }
     }
 
+    /* BILDER */
     .gallery-main {
-      position: relative;
       overflow: hidden;
       border-radius: 6px;
-      border: 1px solid #eee;
-      background: #fafafa;
+      border: 2px solid #d40000;
     }
 
     .gallery-main img {
@@ -89,37 +94,39 @@
       height: 70px;
       object-fit: cover;
       border-radius: 4px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease;
     }
 
     .thumbs img:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+      transform: scale(1.05);
     }
 
+    /* INFO */
     .ad-info h1 {
       font-size: 1.6rem;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-weight: 800;
     }
 
     .price {
-      color: #0f6f3d;
+      color: #d40000;
       font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 10px;
+      font-weight: 900;
+      margin-bottom: 14px;
     }
 
     .meta {
       font-size: 0.85rem;
-      color: #777;
+      color: #555;
       margin-bottom: 14px;
     }
 
     .description-title {
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 4px;
+      font-size: 1rem;
     }
 
     .description {
@@ -131,128 +138,103 @@
     .details-list {
       list-style: none;
       font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 16px;
+      color: #333;
+      margin-bottom: 20px;
     }
 
     .details-list li {
-      margin-bottom: 4px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
+      margin-bottom: 6px;
     }
 
     .btn-primary {
-      background: #0f6f3d;
+      background: #d40000;
       color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 700;
     }
 
     .btn-primary:hover {
-      filter: brightness(1.05);
+      filter: brightness(1.1);
     }
 
     .btn-outline {
-      border: 1px solid #ddd;
       background: #fff;
-      color: #333;
+      border: 2px solid #000;
+      color: #000;
+      padding: 10px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
       margin-left: 8px;
     }
 
     .btn-outline:hover {
-      background: #f5f5f5;
-    }
-
-    .seller-box {
-      border-top: 1px solid #eee;
-      padding-top: 12px;
-      margin-top: 12px;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    .seller-name {
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .badge {
-      background: #e6f4ea;
-      color: #0f6f3d;
-      border-radius: 999px;
-      padding: 2px 8px;
-      font-size: 0.75rem;
-      margin-left: 6px;
+      background: #000;
+      color: #fff;
     }
   </style>
 </head>
 <body>
+
   <div class="page">
+
+    <!-- HEADER -->
     <header>
-      <div class="logo">Kleinanzeigen</div>
+      <div class="logo">LVLRY-BUYS</div>
       <div class="header-links">
-        <a href="#">Anzeige aufgeben</a>
-        <a href="#">Anmelden</a>
+        <a href="#">Start</a>
+        <a href="#">Produkte</a>
       </div>
     </header>
 
+    <!-- ANZEIGE -->
     <main class="ad-card">
-      <!-- Linke Seite: Bilder -->
+
+      <!-- BILDER -->
       <section>
         <div class="gallery-main">
-          <!-- Hauptbild -->
-          <img src="bild1.jpg" alt="LV Skates Sneaker">
+          <img src="IMG_4609.jpeg" alt="Produktbild 1">
         </div>
-        <!-- Thumbnails – ersetze die Dateinamen durch deine anderen Bilder -->
+
         <div class="thumbs">
-          <img src="bild1.jpg" alt="LV Skates hell">
-          <img src="bild2.jpg" alt="LV Skates blau">
-          <img src="bild3.jpg" alt="LV Skates beige">
-          <img src="bild4.jpg" alt="LV Skates schwarz">
+          <img src="IMG_4609.jpeg" alt="Bild 1">
+          <img src="IMG_4610.jpeg" alt="Bild 2">
+          <img src="IMG_4611.jpeg" alt="Bild 3">
+          <img src="IMG_4612.jpeg" alt="Bild 4">
         </div>
       </section>
 
-      <!-- Rechte Seite: Infos -->
+      <!-- TEXT -->
       <section class="ad-info">
         <h1>LV SKATES</h1>
-        <div class="price">49,99&nbsp;€</div>
-        <div class="meta">
-          Heute, 12:34 · 12345 Musterstadt · Versand möglich
-        </div>
+
+        <div class="price">49,99 €</div>
+
+        <div class="meta">Heute · Versand möglich</div>
 
         <div class="description-title">Beschreibung</div>
         <p class="description">
           Die besten Schuhe, für den besten Preis – verpass das nicht!  
-          Stylische LV Skates mit bequemer Sohle und modernem Design, perfekt für Alltag und Freizeit.
+          Stylische LV Skates mit bequemer Sohle und modernem Design.
         </p>
 
         <ul class="details-list">
           <li><strong>Größen:</strong> 38–45</li>
-          <li><strong>Farbe:</strong> Beige, Blau, Schwarz</li>
-          <li><strong>Zustand:</strong> Neu, ungetragen</li>
+          <li><strong>Farben:</strong> Verschiedene Varianten</li>
+          <li><strong>Zustand:</strong> Neu</li>
         </ul>
 
-        <div>
-          <button class="btn btn-primary">Nachricht schreiben</button>
-          <button class="btn btn-outline">Zu Favoriten</button>
-        </div>
-
-        <div class="seller-box">
-          <div class="seller-name">
-            Verkäufer: Max Mustermann
-            <span class="badge">Top Verkäufer</span>
-          </div>
-          <div>Mitglied seit 2024 · 25 Bewertungen</div>
-        </div>
+        <button class="btn-primary">Nachricht senden</button>
+        <button class="btn-outline">Merken</button>
       </section>
+
     </main>
+
   </div>
+
 </body>
 </html>
