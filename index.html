@@ -207,25 +207,13 @@
 
     /* ANIMATIONS */
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes logoPulse {
-      from {
-        opacity: 0.7;
-        text-shadow: 0 0 6px rgba(255,255,255,0.6);
-      }
-      to {
-        opacity: 1;
-        text-shadow: 0 0 16px rgba(255,255,255,1);
-      }
+      from { opacity: 0.7; text-shadow: 0 0 6px rgba(255,255,255,0.6); }
+      to { opacity: 1; text-shadow: 0 0 16px rgba(255,255,255,1); }
     }
   </style>
 </head>
@@ -243,7 +231,6 @@
 
         <div class="thumbs">
           <img src="IMG_4609.jpeg" class="active-thumb">
-          <img src="IMG_4610.jpeg">
           <img src="IMG_4611.jpeg">
           <img src="IMG_4612.jpeg">
         </div>
@@ -260,7 +247,7 @@
 
         <div class="description-title">Beschreibung</div>
         <p class="description">
-          Die besten Schuhe, für den besten Preis – verpass das nicht!  
+          Die besten Schuhe, für den besten Preis – verpass das nicht!
           Stylische LV Skates mit moderner Sohle, starkem Look und Premium-Feeling.
         </p>
 
@@ -290,14 +277,12 @@
 
     thumbs.forEach((thumb) => {
       thumb.addEventListener("click", () => {
-        // Bildwechsel
         mainImage.style.opacity = 0;
         setTimeout(() => {
           mainImage.src = thumb.src;
           mainImage.style.opacity = 1;
         }, 180);
 
-        // Active markieren
         thumbs.forEach(t => t.classList.remove("active-thumb"));
         thumb.classList.add("active-thumb");
       });
