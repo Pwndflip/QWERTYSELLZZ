@@ -43,19 +43,18 @@
       box-shadow: 0 0 35px rgba(255,255,255,0.15);
     }
 
-    /* MAIN IMAGE – feste Fläche, damit sich nichts verschiebt */
+    /* MAIN IMAGE – jetzt wieder 1:1 */
     .gallery-main {
       overflow: hidden;
       border-radius: 8px;
       border: 2px solid #fff;
       background: #000;
-      aspect-ratio: 3 / 4; /* feste Proportion, z.B. 3:4 */
+      aspect-ratio: 1 / 1; /* QUADRATISCH WIE VORHER */
     }
 
     #mainImage {
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: cover;
       transition: opacity 0.2s ease;
     }
@@ -88,59 +87,43 @@
     }
 
     /* TEXT SECTION */
-    .ad-info h1 {
-      font-size: 2rem;
-      font-weight: 900;
-      margin-bottom: 10px;
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.25);
-    }
-
     .logo-badge {
       display: inline-block;
       font-size: 0.9rem;
       font-weight: 900;
       letter-spacing: 2px;
-      text-transform: uppercase;
       color: #fff;
       margin-bottom: 12px;
-      position: relative;
       animation: logoPulse 1.8s infinite alternate;
     }
 
-    .logo-badge::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 4px;
-      box-shadow: 0 0 12px rgba(255,255,255,0.5);
-      opacity: 0.15;
-      pointer-events: none;
+    h1 {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 10px;
     }
 
     .price {
+      color: #fff;
       font-size: 2.2rem;
       font-weight: 900;
       margin-bottom: 16px;
-      color: #fff;
-      text-shadow: 0 0 15px rgba(255,255,255,0.45);
     }
 
     .meta {
-      font-size: 0.85rem;
       color: #aaa;
+      font-size: 0.85rem;
       margin-bottom: 18px;
     }
 
     .description-title {
-      font-size: 1rem;
-      font-weight: 700;
       color: #fff;
+      font-weight: 700;
       margin-bottom: 6px;
     }
 
     .description {
-      font-size: 0.95rem;
       color: #ccc;
       margin-bottom: 20px;
       line-height: 1.6;
@@ -150,71 +133,40 @@
       list-style: none;
       color: #ccc;
       margin-bottom: 26px;
-      font-size: 0.9rem;
     }
 
-    .details-list li {
-      margin-bottom: 8px;
-    }
-
-    /* BUTTONS */
     .btn-primary {
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 800;
-      width: 100%;
-      cursor: pointer;
-      transition: 0.25s ease;
       background: #fff;
       color: #000;
-      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 800;
       text-align: center;
       display: block;
       text-decoration: none;
       box-shadow: 0 0 12px rgba(255,255,255,0.4);
-      margin-top: 4px;
+      transition: 0.25s ease;
     }
 
     .btn-primary:hover {
-      box-shadow: 0 0 22px rgba(255,255,255,0.9);
       transform: scale(1.03);
+      box-shadow: 0 0 22px rgba(255,255,255,0.9);
     }
 
-    /* ANIMATIONS */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes logoPulse {
-      from { opacity: 0.7; text-shadow: 0 0 6px rgba(255,255,255,0.6); }
-      to { opacity: 1; text-shadow: 0 0 16px rgba(255,255,255,1); }
-    }
-
-    /* MOBILE OPTIMIERUNG */
+    /* MOBILE */
     @media (max-width: 720px) {
-      body {
-        padding: 10px;
-      }
-
       .ad-card {
         grid-template-columns: 1fr;
         padding: 14px;
         gap: 16px;
       }
 
-      .ad-info h1 {
-        font-size: 1.6rem;
+      h1 {
+        font-size: 1.7rem;
       }
 
       .price {
         font-size: 1.8rem;
-      }
-
-      .thumbs {
-        gap: 8px;
-        justify-content: flex-start;
       }
 
       .thumbs img {
@@ -222,22 +174,10 @@
         height: auto;
         max-width: 110px;
       }
-
-      .description {
-        font-size: 0.9rem;
-      }
-
-      .details-list {
-        font-size: 0.85rem;
-      }
-
-      .btn-primary {
-        font-size: 0.95rem;
-        padding: 12px 16px;
-      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="page">
@@ -247,7 +187,7 @@
       <!-- IMAGE SECTION -->
       <section>
         <div class="gallery-main">
-          <img id="mainImage" src="IMG_4609.jpeg" alt="Produktbild">
+          <img id="mainImage" src="IMG_4609.jpeg">
         </div>
 
         <div class="thumbs">
@@ -262,6 +202,7 @@
 
       <!-- TEXT SECTION -->
       <section class="ad-info">
+
         <div class="logo-badge">LVLRY-BUYS</div>
 
         <h1>LV SKATES</h1>
@@ -282,11 +223,8 @@
           <li><strong>Lieferung:</strong> 4–5 Wochen</li>
         </ul>
 
-        <!-- INSTAGRAM BUTTON -->
-        <a class="btn-primary"
-           href="https://www.instagram.com/sellzlvlby"
-           target="_blank">
-           Kontakt über Instagram
+        <a class="btn-primary" href="https://www.instagram.com/sellzlvlby" target="_blank">
+          Kontakt über Instagram
         </a>
 
       </section>
@@ -318,7 +256,6 @@
       currentIndex = index;
     }
 
-    // Klicksteuerung
     thumbs.forEach((thumb, index) => {
       thumb.addEventListener("click", () => {
         stopAutoSlide();
@@ -327,7 +264,6 @@
       });
     });
 
-    // Automatischer Bildwechsel alle 5 Sekunden
     function startAutoSlide() {
       autoSlide = setInterval(() => {
         currentIndex = (currentIndex + 1) % thumbs.length;
@@ -339,7 +275,6 @@
       clearInterval(autoSlide);
     }
 
-    // Startzustand
     switchToImage(0);
     startAutoSlide();
   </script>
