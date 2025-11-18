@@ -25,6 +25,7 @@
       animation: fadeInUp 0.7s ease-out both;
     }
 
+    /* CARD */
     .ad-card {
       background: #0a0a0a;
       border-radius: 8px;
@@ -37,34 +38,44 @@
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
+    .ad-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(255,255,255,0.15);
+    }
+
+    /* MAIN IMAGE – feste Fläche, damit sich nichts verschiebt */
     .gallery-main {
       overflow: hidden;
       border-radius: 8px;
       border: 2px solid #fff;
       background: #000;
+      aspect-ratio: 3 / 4; /* feste Proportion, z.B. 3:4 */
     }
 
     #mainImage {
       width: 100%;
+      height: 100%;
+      display: block;
       object-fit: cover;
       transition: opacity 0.2s ease;
     }
 
+    /* THUMBNAILS */
     .thumbs {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
       margin-top: 12px;
+      flex-wrap: wrap;
     }
 
     .thumbs img {
       width: 75px;
       height: 75px;
+      object-fit: cover;
       border-radius: 4px;
       border: 1px solid #fff;
-      object-fit: cover;
       cursor: pointer;
-      transition:pacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
     .thumbs img:hover {
@@ -76,41 +87,60 @@
       box-shadow: 0 0 15px rgba(255,255,255,0.9);
     }
 
-    .logo-badge {
-      color: #fff;
-      font-weight: 900;
-      letter-spacing: 2px;
-      animation: logoPulse 1.8s infinite alternate;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      color: #fff;
+    /* TEXT SECTION */
+    .ad-info h1 {
       font-size: 2rem;
       font-weight: 900;
       margin-bottom: 10px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.25);
+    }
+
+    .logo-badge {
+      display: inline-block;
+      font-size: 0.9rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 12px;
+      position: relative;
+      animation: logoPulse 1.8s infinite alternate;
+    }
+
+    .logo-badge::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.5);
+      opacity: 0.15;
+      pointer-events: none;
     }
 
     .price {
-      color: #fff;
       font-size: 2.2rem;
       font-weight: 900;
       margin-bottom: 16px;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255,255,255,0.45);
     }
 
     .meta {
-      color: #aaa;
       font-size: 0.85rem;
+      color: #aaa;
       margin-bottom: 18px;
     }
 
     .description-title {
-      color: #fff;
+      font-size: 1rem;
       font-weight: 700;
+      color: #fff;
       margin-bottom: 6px;
     }
 
     .description {
+      font-size: 0.95rem;
       color: #ccc;
       margin-bottom: 20px;
       line-height: 1.6;
@@ -120,47 +150,38 @@
       list-style: none;
       color: #ccc;
       margin-bottom: 26px;
+      font-size: 0.9rem;
     }
 
+    .details-list li {
+      margin-bottom: 8px;
+    }
+
+    /* BUTTONS */
     .btn-primary {
-      background: #fff;
-      color: #000;
       padding: 12px 20px;
       border-radius: 6px;
+      font-size: 1rem;
       font-weight: 800;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.25s ease;
+      background: #fff;
+      color: #000;
+      border: none;
       text-align: center;
       display: block;
       text-decoration: none;
       box-shadow: 0 0 12px rgba(255,255,255,0.4);
-      transition: 0.25s ease;
+      margin-top: 4px;
     }
 
     .btn-primary:hover {
-      transform: scale(1.03);
       box-shadow: 0 0 22px rgba(255,255,255,0.9);
+      transform: scale(1.03);
     }
 
-    @media (max-width: 720px) {
-      .ad-card {
-        grid-template-columns: 1fr;
-        padding: 14px;
-      }
-
-      h1 {
-        font-size: 1.7rem;
-      }
-
-      .price {
-        font-size: 1.8rem;
-      }
-
-      .thumbs img {
-        width: 30%;
-        height: auto;
-        max-width: 110px;
-      }
-    }
-
+    /* ANIMATIONS */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -170,9 +191,53 @@
       from { opacity: 0.7; text-shadow: 0 0 6px rgba(255,255,255,0.6); }
       to { opacity: 1; text-shadow: 0 0 16px rgba(255,255,255,1); }
     }
+
+    /* MOBILE OPTIMIERUNG */
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+
+      .ad-card {
+        grid-template-columns: 1fr;
+        padding: 14px;
+        gap: 16px;
+      }
+
+      .ad-info h1 {
+        font-size: 1.6rem;
+      }
+
+      .price {
+        font-size: 1.8rem;
+      }
+
+      .thumbs {
+        gap: 8px;
+        justify-content: flex-start;
+      }
+
+      .thumbs img {
+        width: 30%;
+        height: auto;
+        max-width: 110px;
+      }
+
+      .description {
+        font-size: 0.9rem;
+      }
+
+      .details-list {
+        font-size: 0.85rem;
+      }
+
+      .btn-primary {
+        font-size: 0.95rem;
+        padding: 12px 16px;
+      }
+    }
   </style>
 </head>
-
 <body>
 
   <div class="page">
@@ -182,10 +247,9 @@
       <!-- IMAGE SECTION -->
       <section>
         <div class="gallery-main">
-          <img id="mainImage" src="IMG_4609.jpeg" alt="">
+          <img id="mainImage" src="IMG_4609.jpeg" alt="Produktbild">
         </div>
 
-        <!-- UPDATED THUMBNAILS INCLUDING NEW IMAGES -->
         <div class="thumbs">
           <img src="IMG_4609.jpeg" class="active-thumb">
           <img src="IMG_4611.jpeg">
@@ -194,12 +258,10 @@
           <img src="IMG_4632.jpeg">
           <img src="IMG_4633.jpeg">
         </div>
-
       </section>
 
       <!-- TEXT SECTION -->
       <section class="ad-info">
-
         <div class="logo-badge">LVLRY-BUYS</div>
 
         <h1>LV SKATES</h1>
@@ -216,11 +278,15 @@
         <ul class="details-list">
           <li><strong>Größen:</strong> 36–46</li>
           <li><strong>Farben:</strong> 36 Farben</li>
-          <li><strong>Qualität:</strong> Sehr Gut</li>
+          <li><strong>Qualität:</strong> Sehr gut</li>
+          <li><strong>Lieferung:</strong> 4–5 Wochen</li>
         </ul>
 
-        <a class="btn-primary" href="https://www.instagram.com/sellzlvlby" target="_blank">
-          Kontakt über Instagram
+        <!-- INSTAGRAM BUTTON -->
+        <a class="btn-primary"
+           href="https://www.instagram.com/sellzlvlby"
+           target="_blank">
+           Kontakt über Instagram
         </a>
 
       </section>
@@ -233,20 +299,49 @@
     const mainImage = document.getElementById("mainImage");
     const thumbs = document.querySelectorAll(".thumbs img");
 
-    thumbs.forEach(thumb => {
+    let currentIndex = 0;
+    let autoSlide;
+
+    function switchToImage(index) {
+      const selected = thumbs[index];
+      if (!selected) return;
+
+      mainImage.style.opacity = 0;
+      setTimeout(() => {
+        mainImage.src = selected.src;
+        mainImage.style.opacity = 1;
+      }, 180);
+
+      thumbs.forEach(t => t.classList.remove("active-thumb"));
+      selected.classList.add("active-thumb");
+
+      currentIndex = index;
+    }
+
+    // Klicksteuerung
+    thumbs.forEach((thumb, index) => {
       thumb.addEventListener("click", () => {
-
-        mainImage.style.opacity = 0;
-
-        setTimeout(() => {
-          mainImage.src = thumb.src;
-          mainImage.style.opacity = 1;
-        }, 180);
-
-        thumbs.forEach(t => t.classList.remove("active-thumb"));
-        thumb.classList.add("active-thumb");
+        stopAutoSlide();
+        switchToImage(index);
+        startAutoSlide();
       });
     });
+
+    // Automatischer Bildwechsel alle 5 Sekunden
+    function startAutoSlide() {
+      autoSlide = setInterval(() => {
+        currentIndex = (currentIndex + 1) % thumbs.length;
+        switchToImage(currentIndex);
+      }, 5000);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlide);
+    }
+
+    // Startzustand
+    switchToImage(0);
+    startAutoSlide();
   </script>
 
 </body>
