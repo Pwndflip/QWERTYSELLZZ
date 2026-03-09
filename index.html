@@ -2,199 +2,146 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCL Premium Stream</title>
+    <title>Vidking Premium TCL Edition</title>
     <style>
-        :root {
-            --bg-color: #0a0a0a;
-            --accent: #e50914;
-            --card-bg: #1a1a1a;
-            --text: #ffffff;
-        }
+        :root { --accent: #e50914; --bg: #0f0f0f; --panel: #1a1a1a; }
+        body { background: var(--bg); color: white; font-family: 'Arial', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            font-family: 'Roboto', sans-serif;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-        }
+        /* Linke Seite: Einstellungen */
+        #settings-panel { width: 350px; background: var(--panel); padding: 20px; border-right: 2px solid #333; overflow-y: auto; }
+        h2 { color: var(--accent); font-size: 1.2rem; text-transform: uppercase; }
+        .setting-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        label { font-size: 0.9rem; margin-bottom: 5px; color: #aaa; }
+        
+        select, input { background: #2a2a2a; border: 1px solid #444; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        input:focus, select:focus { border-color: var(--accent); outline: none; background: #333; }
 
-        /* Header & Input Bereich */
-        .header {
-            padding: 40px;
-            background: linear-gradient(to bottom, #111, transparent);
-        }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
+        .checkbox-group input { margin: 0; width: 20px; height: 20px; }
 
-        .input-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
+        /* Rechte Seite: Content & Vorschau */
+        #content-area { flex-grow: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #222 0%, #0f0f0f 100%); }
+        
+        #preview-card { width: 300px; border-radius: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 4px solid transparent; transition: 0.3s; }
+        #preview-card img { width: 100%; border-radius: 11px; display: block; }
+        #preview-card.active { border-color: var(--accent); transform: scale(1.05); }
 
-        input {
-            background: #222;
-            border: 2px solid #333;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
-
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-
-        button:focus { outline: 3px solid white; transform: scale(1.05); }
-
-        /* Content Bereich */
-        .container { padding: 0 40px 40px 40px; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 3px solid transparent;
-            transition: 0.3s;
-        }
-
-        .card:focus {
-            border-color: var(--accent);
-            transform: scale(1.1);
-            outline: none;
-        }
-
-        .card img { width: 100%; height: 280px; object-fit: cover; }
-
-        /* Fullscreen Player */
-        #player-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 1000;
-        }
-
-        .back-btn {
-            position: absolute; top: 20px; left: 20px;
-            z-index: 1001; background: rgba(0,0,0,0.6);
-        }
+        /* Player Overlay */
+        #player-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; }
+        .close-btn { position: absolute; top: 20px; left: 20px; background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 5px; z-index: 10000; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>TCL Premium Cinema</h1>
-    
-    <div class="input-group">
-        <input type="text" id="tmdb-input" placeholder="TMDB Link oder ID (z.B. 79744)" style="width: 400px;" tabindex="1">
-        <input type="number" id="season-input" placeholder="St." style="width: 70px;" tabindex="2">
-        <input type="number" id="episode-input" placeholder="Ep." style="width: 70px;" tabindex="3">
-        <button id="play-btn" onclick="handleStart()" tabindex="4">ABSPIELEN</button>
-    </div>
-</div>
-
-<div class="container">
-    <h3>Zuletzt gesehen / Favoriten</h3>
-    <div class="grid" id="movie-grid">
-        <div class="card" tabindex="5" onclick="quickPlay('79744', '8', '1')">
-            <img src="https://www.themoviedb.org/t/p/w500/iS9UpeR6T9R88T6A6vY8j9v8j.jpg">
-            <div style="padding: 10px; text-align: center;">The Rookie (S8)</div>
+<div id="settings-panel">
+    <h2>Basic Settings</h2>
+    <div class="setting-group">
+        <label>Media Type</label>
+        <select id="mediaType" onchange="toggleTVFields()" tabindex="1">
+            <option value="movie">Movie</option>
+            <option value="tv">TV Series</option>
+        </select>
+        
+        <label>TMDB ID (oder Link)</label>
+        <input type="text" id="tmdbId" placeholder="z.B. 79744" oninput="updatePreview()" tabindex="2">
+        
+        <div id="tv-only-fields" style="display:none;">
+            <label>Season / Episode</label>
+            <div style="display:flex; gap:10px;">
+                <input type="number" id="season" value="1" style="width:50%" oninput="updatePreview()">
+                <input type="number" id="episode" value="1" style="width:50%" oninput="updatePreview()">
+            </div>
         </div>
     </div>
+
+    <h2>Colors</h2>
+    <select id="playerColor" tabindex="3">
+        <option value="e50914">Netflix Red</option>
+        <option value="007bff">Default Blue</option>
+        <option value="ff0000">YouTube Red</option>
+        <option value="9146ff">Twitch Purple</option>
+        <option value="5865f2">Discord Blue</option>
+        <option value="1db954">Spotify Green</option>
+        <option value="ff8c00">Orange</option>
+    </select>
+
+    <h2>Features</h2>
+    <label class="checkbox-group"><input type="checkbox" id="autoPlay" checked> Auto Play</label>
+    <label class="checkbox-group"><input type="checkbox" id="nextBtn" checked> Next Episode Button</label>
+    <label class="checkbox-group"><input type="checkbox" id="epSelector" checked> Episode Selector</label>
+
+    <button onclick="startStreaming()" style="width:100%; margin-top:20px; background:var(--accent); color:white; padding:15px; border:none; border-radius:5px; font-weight:bold; cursor:pointer;" tabindex="4">JETZT ABSPIELEN</button>
+</div>
+
+<div id="content-area">
+    <div id="preview-card">
+        <img id="poster-img" src="https://via.placeholder.com/300x450?text=Warte+auf+ID..." alt="Poster">
+    </div>
+    <h1 id="movie-title" style="margin-top:20px;">Wähle einen Titel</h1>
 </div>
 
 <div id="player-overlay">
-    <button class="back-btn" onclick="closePlayer()">← ZURÜCK</button>
-    <iframe id="main-player" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+    <button class="close-btn" onclick="closePlayer()">BACK / SCHLIESSEN</button>
+    <iframe id="vidking-frame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <script>
-    const COLOR = "e50914";
-
-    function handleStart() {
-        const input = document.getElementById('tmdb-input').value;
-        const s = document.getElementById('season-input').value;
-        const e = document.getElementById('episode-input').value;
-
-        let finalUrl = "";
-
-        // Logik: Ist es ein TMDB-Link?
-        if (input.includes("themoviedb.org")) {
-            finalUrl = extractFromUrl(input, s, e);
-        } else {
-            // Logik: Es ist eine reine ID
-            if (s && e) {
-                // TV Serie
-                finalUrl = `https://www.vidking.net/embed/tv/${input}/${s}/${e}?color=${COLOR}&nextEpisode=true&episodeSelector=true&autoPlay=true`;
-            } else {
-                // Film
-                finalUrl = `https://www.vidking.net/embed/movie/${input}?color=${COLOR}&autoPlay=true`;
-            }
+    // TMDB API Key ist hier nicht zwingend nötig, wir nutzen den Image-Pfad direkt über die ID
+    function updatePreview() {
+        let id = document.getElementById('tmdbId').value;
+        // Falls Link eingefügt wurde, ID extrahieren
+        if(id.includes('themoviedb.org')) {
+            const match = id.match(/\/(tv|movie)\/(\d+)/);
+            if(match) id = match[2];
         }
-
-        if (finalUrl) openPlayer(finalUrl);
-    }
-
-    function extractFromUrl(url, s, e) {
-        // Extrahiert ID aus Link
-        const idMatch = url.match(/\/(tv|movie)\/(\d+)/);
-        if (!idMatch) return null;
-
-        const type = idMatch[1];
-        const id = idMatch[2];
-
-        if (type === "tv") {
-            // Check ob Staffel/Folge im Link sind, sonst nimm die manuellen Inputs
-            const urlParts = url.match(/\/season\/(\d+)(?:\/episode\/(\d+))?/);
-            const finalS = (urlParts ? urlParts[1] : s) || "1";
-            const finalE = (urlParts ? urlParts[2] : e) || "1";
-            return `https://www.vidking.net/embed/tv/${id}/${finalS}/${finalE}?color=${COLOR}&nextEpisode=true&episodeSelector=true&autoPlay=true`;
-        } else {
-            return `https://www.vidking.net/embed/movie/${id}?color=${COLOR}&autoPlay=true`;
+        
+        if(id.length > 2) {
+            document.getElementById('poster-img').src = `https://image.tmdb.org/t/p/w500/${id}.jpg`; // Simpler Check: TMDB Poster-Pfad
+            // Hinweis: Für echte Namen bräuchtest du einen API Fetch, aber das Poster-System von TMDB ist meist konsistent via ID auffindbar
+            document.getElementById('preview-card').classList.add('active');
         }
     }
 
-    function quickPlay(id, s, e) {
-        let url = s ? `https://www.vidking.net/embed/tv/${id}/${s}/${e}?color=${COLOR}&autoPlay=true` 
-                    : `https://www.vidking.net/embed/movie/${id}?color=${COLOR}&autoPlay=true`;
-        openPlayer(url);
+    function toggleTVFields() {
+        const type = document.getElementById('mediaType').value;
+        document.getElementById('tv-only-fields').style.display = (type === 'tv') ? 'block' : 'none';
     }
 
-    function openPlayer(url) {
-        document.getElementById('main-player').src = url;
+    function startStreaming() {
+        let id = document.getElementById('tmdbId').value;
+        if(id.includes('themoviedb.org')) {
+            const match = id.match(/\/(tv|movie)\/(\d+)/);
+            if(match) id = match[2];
+        }
+
+        const type = document.getElementById('mediaType').value;
+        const color = document.getElementById('playerColor').value;
+        const autoPlay = document.getElementById('autoPlay').checked;
+        const nextBtn = document.getElementById('nextBtn').checked;
+        const selector = document.getElementById('epSelector').checked;
+        
+        let url = "";
+        if(type === "movie") {
+            url = `https://www.vidking.net/embed/movie/${id}?color=${color}&autoPlay=${autoPlay}`;
+        } else {
+            const s = document.getElementById('season').value;
+            const e = document.getElementById('episode').value;
+            url = `https://www.vidking.net/embed/tv/${id}/${s}/${e}?color=${color}&autoPlay=${autoPlay}&nextEpisode=${nextBtn}&episodeSelector=${selector}`;
+        }
+
+        document.getElementById('vidking-frame').src = url;
         document.getElementById('player-overlay').style.display = 'block';
     }
 
     function closePlayer() {
-        document.getElementById('main-player').src = "";
+        document.getElementById('vidking-frame').src = "";
         document.getElementById('player-overlay').style.display = 'none';
     }
 
-    // Back-Button Support für Fernbedienung
-    window.onkeydown = function(e) {
-        if (e.key === "Backspace" || e.key === "Escape") {
-            closePlayer();
-        }
-    };
+    // TCL Fernbedienung Support
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' || e.key === 'Escape') closePlayer();
+    });
 </script>
-
 </body>
 </html>
