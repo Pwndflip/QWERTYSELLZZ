@@ -3,161 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine Premium Streaming Welt</title>
+    <title>TCL Premium Stream</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
-            --accent-color: #e50914; /* Netflix Red für TCL Kontrast */
-            --text-color: #ffffff;
-            --card-width: 200px;
-            --card-height: 300px;
+            --accent: #e50914;
+            --card-bg: #1a1a1a;
+            --text: #ffffff;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            overflow: hidden; /* Verhindert hässliche Scrollbars auf dem TV */
-            display: flex;
+            color: var(--text);
+            font-family: 'Roboto', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
         }
 
-        /* Sidebar für TV Navigation */
-        nav {
-            width: 80px;
-            height: 100vh;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 40px;
-            border-right: 1px solid #222;
+        /* Header & Input Bereich */
+        .header {
+            padding: 40px;
+            background: linear-gradient(to bottom, #111, transparent);
         }
 
-        .nav-item {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 30px;
-            border-radius: 50%;
-            background: #333;
-            cursor: pointer;
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            background: #222;
+            border: 2px solid #333;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            outline: none;
             transition: 0.3s;
         }
 
-        .nav-item.active, .nav-item:focus {
-            background: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color);
-            outline: none;
+        input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
         }
 
-        /* Hauptbereich */
-        main {
-            flex-grow: 1;
-            padding: 40px;
-            overflow-y: auto;
-            height: 100vh;
-        }
+        button:focus { outline: 3px solid white; transform: scale(1.05); }
 
-        h1 { font-size: 2.5rem; margin-bottom: 30px; }
+        /* Content Bereich */
+        .container { padding: 0 40px 40px 40px; }
 
-        .movie-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 25px;
         }
 
-        /* Movie Card mit Fokus-Effekt für Fernbedienung */
-        .movie-card {
-            width: var(--card-width);
-            height: var(--card-height);
-            background: #222;
-            border-radius: 12px;
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s, border 0.3s;
             border: 3px solid transparent;
-            cursor: pointer;
-            position: relative;
+            transition: 0.3s;
         }
 
-        .movie-card img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Der extrem wichtige Fokus-Status für TCL */
-        .movie-card:focus {
-            outline: none;
+        .card:focus {
+            border-color: var(--accent);
             transform: scale(1.1);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
-            z-index: 10;
+            outline: none;
         }
 
-        /* Player Overlay */
+        .card img { width: 100%; height: 280px; object-fit: cover; }
+
+        /* Fullscreen Player */
         #player-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: black;
-            z-index: 100;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 1000;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none; padding: 10px 20px;
-            border-radius: 5px; cursor: pointer;
-            z-index: 101;
+        .back-btn {
+            position: absolute; top: 20px; left: 20px;
+            z-index: 1001; background: rgba(0,0,0,0.6);
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-item active" tabindex="1"></div>
-        <div class="nav-item" tabindex="2"></div>
-    </nav>
-
-    <main>
-        <h1>Meine 4K Auswahl</h1>
-        <div class="movie-grid">
-            <div class="movie-card" tabindex="3" onclick="playMovie('1078605')">
-                <img src="https://image.tmdb.org/t/p/w500/iS9UpeR6T9R88T6A6vY8j9v8j.jpg" alt="Poster">
-            </div>
-            </div>
-    </main>
-
-    <div id="player-overlay">
-        <button class="close-btn" onclick="closePlayer()">BEENDEN (BACK)</button>
-        <iframe id="vidking-iframe" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+<div class="header">
+    <h1>TCL Premium Cinema</h1>
+    
+    <div class="input-group">
+        <input type="text" id="tmdb-input" placeholder="TMDB Link oder ID (z.B. 79744)" style="width: 400px;" tabindex="1">
+        <input type="number" id="season-input" placeholder="St." style="width: 70px;" tabindex="2">
+        <input type="number" id="episode-input" placeholder="Ep." style="width: 70px;" tabindex="3">
+        <button id="play-btn" onclick="handleStart()" tabindex="4">ABSPIELEN</button>
     </div>
+</div>
 
-    <script>
-        function playMovie(tmdbId) {
-            const player = document.getElementById('vidking-iframe');
-            const overlay = document.getElementById('player-overlay');
-            
-            // Vidking URL mit deinen Parametern (TCL optimiert: Rot, Autoplay, TV Selector)
-            player.src = `https://www.vidking.net/embed/movie/${tmdbId}?color=e50914&autoPlay=true`;
-            
-            overlay.style.display = 'block';
-            player.focus();
-        }
+<div class="container">
+    <h3>Zuletzt gesehen / Favoriten</h3>
+    <div class="grid" id="movie-grid">
+        <div class="card" tabindex="5" onclick="quickPlay('79744', '8', '1')">
+            <img src="https://www.themoviedb.org/t/p/w500/iS9UpeR6T9R88T6A6vY8j9v8j.jpg">
+            <div style="padding: 10px; text-align: center;">The Rookie (S8)</div>
+        </div>
+    </div>
+</div>
 
-        function closePlayer() {
-            const player = document.getElementById('vidking-iframe');
-            const overlay = document.getElementById('player-overlay');
-            player.src = ""; // Stop playback
-            overlay.style.display = 'none';
-        }
+<div id="player-overlay">
+    <button class="back-btn" onclick="closePlayer()">← ZURÜCK</button>
+    <iframe id="main-player" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+</div>
 
-        // Steuerung für die Fernbedienung (D-Pad Unterstützung)
-        document.addEventListener('keydown', (e) => {
-            const active = document.activeElement;
-            if (e.key === 'Escape' || e.key === 'Back' || e.key === 'BrowserBack') {
-                closePlayer();
+<script>
+    const COLOR = "e50914";
+
+    function handleStart() {
+        const input = document.getElementById('tmdb-input').value;
+        const s = document.getElementById('season-input').value;
+        const e = document.getElementById('episode-input').value;
+
+        let finalUrl = "";
+
+        // Logik: Ist es ein TMDB-Link?
+        if (input.includes("themoviedb.org")) {
+            finalUrl = extractFromUrl(input, s, e);
+        } else {
+            // Logik: Es ist eine reine ID
+            if (s && e) {
+                // TV Serie
+                finalUrl = `https://www.vidking.net/embed/tv/${input}/${s}/${e}?color=${COLOR}&nextEpisode=true&episodeSelector=true&autoPlay=true`;
+            } else {
+                // Film
+                finalUrl = `https://www.vidking.net/embed/movie/${input}?color=${COLOR}&autoPlay=true`;
             }
-        });
-    </script>
+        }
+
+        if (finalUrl) openPlayer(finalUrl);
+    }
+
+    function extractFromUrl(url, s, e) {
+        // Extrahiert ID aus Link
+        const idMatch = url.match(/\/(tv|movie)\/(\d+)/);
+        if (!idMatch) return null;
+
+        const type = idMatch[1];
+        const id = idMatch[2];
+
+        if (type === "tv") {
+            // Check ob Staffel/Folge im Link sind, sonst nimm die manuellen Inputs
+            const urlParts = url.match(/\/season\/(\d+)(?:\/episode\/(\d+))?/);
+            const finalS = (urlParts ? urlParts[1] : s) || "1";
+            const finalE = (urlParts ? urlParts[2] : e) || "1";
+            return `https://www.vidking.net/embed/tv/${id}/${finalS}/${finalE}?color=${COLOR}&nextEpisode=true&episodeSelector=true&autoPlay=true`;
+        } else {
+            return `https://www.vidking.net/embed/movie/${id}?color=${COLOR}&autoPlay=true`;
+        }
+    }
+
+    function quickPlay(id, s, e) {
+        let url = s ? `https://www.vidking.net/embed/tv/${id}/${s}/${e}?color=${COLOR}&autoPlay=true` 
+                    : `https://www.vidking.net/embed/movie/${id}?color=${COLOR}&autoPlay=true`;
+        openPlayer(url);
+    }
+
+    function openPlayer(url) {
+        document.getElementById('main-player').src = url;
+        document.getElementById('player-overlay').style.display = 'block';
+    }
+
+    function closePlayer() {
+        document.getElementById('main-player').src = "";
+        document.getElementById('player-overlay').style.display = 'none';
+    }
+
+    // Back-Button Support für Fernbedienung
+    window.onkeydown = function(e) {
+        if (e.key === "Backspace" || e.key === "Escape") {
+            closePlayer();
+        }
+    };
+</script>
+
 </body>
 </html>
