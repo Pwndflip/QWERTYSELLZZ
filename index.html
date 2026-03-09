@@ -1,7 +1,41 @@
-<iframe 
-  src="https://www.vidking.net/embed/tv/79744/8/1?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true" 
-  width="100%" 
-  height="600" 
-  frameborder="0" 
-  allowfullscreen>
-</iframe>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Videoplayer</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000; /* Schwarzer Hintergrund für Kino-Look */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            max-width: 1200px; /* Begrenzt die Breite auf großen Bildschirmen */
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <iframe 
+            src="https://www.vidking.net/embed/tv/79744/8/1?color=e50914&autoPlay=true&nextEpisode=true&episodeSelector=true" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
+</body>
+</html>
