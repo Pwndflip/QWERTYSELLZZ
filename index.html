@@ -3,125 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidking Custom Hub</title>
+    <title>Vidking Cinema - Premium Streaming</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .accent-border { border-left: 4px solid #e50914; }
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        .movie-gradient {
+            background: linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,1) 100%);
+        }
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
+            transform: translateY(-2px);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e50914; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-10 flex justify-between items-center">
-            <div>
-                <h1 class="text-4xl font-black tracking-tight text-white">VIDKING <span class="text-red-600">STUDIO</span></h1>
-                <p class="text-slate-400">Dein persönliches Video-Interface</p>
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+        <div class="flex items-center gap-8">
+            <h1 class="text-3xl font-black tracking-tighter text-red-600">VID<span class="text-white">KING</span></h1>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-gray-300">
+                <a href="#" class="hover:text-white transition">Home</a>
+                <a href="#" class="hover:text-white transition">Filme</a>
+                <a href="#" class="hover:text-white transition">Serien</a>
+                <a href="#" class="hover:text-white transition">Neuerscheinungen</a>
             </div>
-            <div class="hidden md:block text-right">
-                <span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-sm font-mono border border-green-500/20">99.9% Uptime Online</span>
-            </div>
-        </header>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="document.getElementById('configPanel').classList.toggle('hidden')" class="p-2 hover:bg-white/10 rounded-full transition">
+                <span class="text-xl">⚙️</span>
+            </button>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-purple-600 border border-white/20"></div>
+        </div>
+    </nav>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="relative pt-24 pb-20 px-4 md:px-10 max-w-[1600px] mx-auto">
+        
+        <div class="relative group rounded-3xl overflow-hidden shadow-2xl shadow-red-900/10 border border-white/5">
+            <div class="aspect-video w-full bg-zinc-900">
+                <iframe id="vidking-player" src="" width="100%" height="100%" frameborder="0" allowfullscreen class="w-full h-full"></iframe>
+            </div>
             
-            <div class="lg:col-span-1 space-y-6">
-                <div class="glass p-6 rounded-2xl">
-                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                        <span>⚙️</span> Konfiguration
-                    </h2>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-2 text-slate-300">Inhaltstyp</label>
-                        <select id="mediaType" class="w-full bg-slate-800 border-none rounded-lg p-2 text-white outline-none ring-1 ring-white/10" onchange="toggleInputs()">
-                            <option value="movie">Film</option>
-                            <option value="tv">Serie</option>
-                        </select>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-medium mb-1 text-slate-300">TMDB ID</label>
-                            <input type="text" id="tmdbId" value="1078605" class="w-full bg-slate-800 rounded-lg p-2 text-white ring-1 ring-white/10" oninput="updatePlayer()">
-                        </div>
-                        <div id="tvFields" class="hidden grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-slate-300">Staffel</label>
-                                <input type="number" id="season" value="1" class="w-full bg-slate-800 rounded-lg p-2 text-white ring-1 ring-white/10" oninput="updatePlayer()">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-slate-300">Episode</label>
-                                <input type="number" id="episode" value="1" class="w-full bg-slate-800 rounded-lg p-2 text-white ring-1 ring-white/10" oninput="updatePlayer()">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 space-y-3">
-                        <label class="block text-sm font-medium mb-2 text-slate-300">Features</label>
-                        <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded-lg transition">
-                            <span class="text-sm">Autoplay</span>
-                            <input type="checkbox" id="autoPlay" onchange="updatePlayer()">
-                        </div>
-                        <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded-lg transition">
-                            <span class="text-sm">Next Episode (TV)</span>
-                            <input type="checkbox" id="nextEp" onchange="updatePlayer()" checked>
-                        </div>
-                        <div class="flex items-center justify-between p-2 hover:bg-white/5 rounded-lg transition">
-                            <span class="text-sm">Selector (TV)</span>
-                            <input type="checkbox" id="epSelector" onchange="updatePlayer()" checked>
-                        </div>
-                    </div>
-
-                    <div class="mt-6">
-                        <label class="block text-sm font-medium mb-2 text-slate-300">Primärfarbe (Hex)</label>
-                        <div class="flex gap-2">
-                            <input type="color" id="colorPicker" value="#e50914" class="h-10 w-10 bg-transparent border-none cursor-pointer" oninput="updatePlayer()">
-                            <input type="text" id="colorText" value="e50914" class="flex-1 bg-slate-800 rounded-lg p-2 text-white ring-1 ring-white/10 uppercase" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2 space-y-6">
-                <div class="glass rounded-2xl overflow-hidden">
-                    <div class="bg-slate-800/50 p-4 border-b border-white/5 flex justify-between items-center">
-                        <span class="text-sm font-mono text-slate-400">Live Preview</span>
-                        <div class="flex gap-1">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                    </div>
-                    <div class="relative w-full aspect-video bg-black">
-                        <iframe id="vidking-player" src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-
-                <div class="glass p-6 rounded-2xl accent-border">
-                    <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
-                        <span>📄</span> Embed Code
-                    </h3>
-                    <div class="relative">
-                        <pre id="codeOutput" class="bg-black/50 p-4 rounded-xl text-xs md:text-sm text-blue-400 overflow-x-auto whitespace-pre-wrap"></pre>
-                        <button onclick="copyCode()" class="absolute top-2 right-2 bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1 rounded">Kopieren</button>
+            <div class="absolute bottom-0 left-0 w-full p-8 movie-gradient pointer-events-none">
+                <div class="flex items-end justify-between">
+                    <div>
+                        <span class="bg-red-600 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest mb-3 inline-block">4K Ultra HD</span>
+                        <h2 id="displayTitle" class="text-4xl md:text-6xl font-bold mb-2">Wähle deinen Film</h2>
+                        <p class="text-gray-400 max-w-xl text-sm md:text-base line-clamp-2">Erlebe die neueste Kinotechnologie mit adaptiv gestreuten Inhalten und immersiven Sounderlebnissen direkt in deinem Browser.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <footer class="mt-12 glass p-6 rounded-2xl">
-            <h3 class="text-sm font-bold uppercase tracking-widest text-slate-500 mb-4">Live Progress Events (API)</h3>
-            <div id="eventLog" class="font-mono text-xs text-green-500 h-24 overflow-y-auto space-y-1">
-                <p>> Warte auf Player-Events...</p>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-12">
+            
+            <div class="lg:col-span-3 space-y-8">
+                <div class="flex flex-wrap gap-4">
+                    <button class="glow-button bg-red-600 px-8 py-3 rounded-xl font-bold flex items-center gap-2">
+                        <span>▶</span> Jetzt abspielen
+                    </button>
+                    <button class="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-xl font-bold transition">
+                        + Watchlist
+                    </button>
+                    <button onclick="copyEmbed()" class="bg-zinc-800 hover:bg-zinc-700 px-6 py-3 rounded-xl text-sm transition border border-white/5">
+                        Embed Code kopieren
+                    </button>
+                </div>
+
+                <div class="border-t border-white/10 pt-8">
+                    <h3 class="text-xl font-bold mb-4">Ähnliche Titel</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="aspect-[2/3] bg-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer border border-white/5">
+                             <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300" class="w-full h-full object-cover opacity-60">
+                        </div>
+                        <div class="aspect-[2/3] bg-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer border border-white/5">
+                             <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=300" class="w-full h-full object-cover opacity-60">
+                        </div>
+                        <div class="aspect-[2/3] bg-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=300" class="w-full h-full object-cover opacity-60">
+                        </div>
+                        <div class="aspect-[2/3] bg-zinc-800 rounded-xl overflow-hidden hover:scale-105 transition cursor-pointer border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1594908900066-3f47337549d8?auto=format&fit=crop&w=300" class="w-full h-full object-cover opacity-60">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </footer>
-    </div>
+
+            <div id="configPanel" class="hidden lg:block space-y-6">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-red-500 font-bold uppercase text-xs tracking-widest mb-6">Regie-Konsole</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold">Typ</label>
+                            <select id="mediaType" onchange="toggleInputs()" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 mt-1 text-sm outline-none">
+                                <option value="movie">Blockbuster Film</option>
+                                <option value="tv">Premium Serie</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold">Inhalts ID (TMDB)</label>
+                            <input type="text" id="tmdbId" value="1078605" oninput="updatePlayer()" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 mt-1 text-sm">
+                        </div>
+
+                        <div id="tvFields" class="hidden grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase font-bold">Staffel</label>
+                                <input type="number" id="season" value="1" oninput="updatePlayer()" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase font-bold">Episode</label>
+                                <input type="number" id="episode" value="1" oninput="updatePlayer()" class="w-full bg-black/40 border border-white/10 rounded-lg p-2 text-sm">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-400">Autoplay</span>
+                                <input type="checkbox" id="autoPlay" onchange="updatePlayer()" class="accent-red-600">
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-gray-400">Auto-Next</span>
+                                <input type="checkbox" id="nextEp" onchange="updatePlayer()" checked class="accent-red-600">
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <label class="text-[10px] text-gray-500 uppercase font-bold block mb-2">Interface Farbe</label>
+                            <input type="color" id="colorPicker" value="#e50914" oninput="updatePlayer()" class="w-full h-8 bg-transparent border-none cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-2">Status</p>
+                    <div id="eventLog" class="text-[10px] font-mono text-green-500 max-h-20 overflow-hidden">
+                        > System bereit...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <pre id="codeOutput" class="hidden"></pre>
 
     <script>
         function toggleInputs() {
             const type = document.getElementById('mediaType').value;
             document.getElementById('tvFields').classList.toggle('hidden', type === 'movie');
+            document.getElementById('displayTitle').innerText = type === 'movie' ? 'Cinematic Experience' : 'Premium Series';
             updatePlayer();
         }
 
@@ -133,52 +183,31 @@
             const color = document.getElementById('colorPicker').value.replace('#', '');
             const autoPlay = document.getElementById('autoPlay').checked;
             const nextEp = document.getElementById('nextEp').checked;
-            const epSelector = document.getElementById('epSelector').checked;
-
-            document.getElementById('colorText').value = color;
 
             let baseUrl = `https://www.vidking.net/embed/${type}/${id}`;
-            if (type === 'tv') {
-                baseUrl += `/${season}/${episode}`;
-            }
+            if (type === 'tv') baseUrl += `/${season}/${episode}`;
 
             const params = new URLSearchParams();
             params.append('color', color);
             if (autoPlay) params.append('autoPlay', 'true');
-            if (type === 'tv') {
-                if (nextEp) params.append('nextEpisode', 'true');
-                if (epSelector) params.append('episodeSelector', 'true');
-            }
+            if (type === 'tv' && nextEp) params.append('nextEpisode', 'true');
+            params.append('episodeSelector', 'true');
 
             const finalUrl = `${baseUrl}?${params.toString()}`;
-            const iframeCode = `<iframe src="${finalUrl}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>`;
-
             document.getElementById('vidking-player').src = finalUrl;
-            document.getElementById('codeOutput').innerText = iframeCode;
+            document.getElementById('codeOutput').innerText = `<iframe src="${finalUrl}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>`;
         }
 
-        function copyCode() {
+        function copyEmbed() {
             const code = document.getElementById('codeOutput').innerText;
             navigator.clipboard.writeText(code);
-            alert("Code kopiert!");
+            alert("Embed-Code für deine Kinoseite kopiert!");
         }
 
-        // Listen for Vidking Events (aus Dokumentation)
         window.addEventListener("message", function (event) {
             const log = document.getElementById('eventLog');
             if (event.data) {
                 try {
                     const data = JSON.parse(event.data);
-                    const timestamp = new Date().toLocaleTimeString();
-                    const newEntry = document.createElement('p');
-                    newEntry.innerHTML = `<span class="text-slate-500">[${timestamp}]</span> Event: <span class="text-white">${data.data.event}</span> | Progress: ${data.data.progress}%`;
-                    log.prepend(newEntry);
-                } catch(e) {}
-            }
-        });
-
-        // Init
-        toggleInputs();
-    </script>
-</body>
-</html>
+                    log.innerHTML = `> Event: ${data.data.event}<br>> Progress: ${data.data.progress}%`;
+                } catch(e
